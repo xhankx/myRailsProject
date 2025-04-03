@@ -15,9 +15,52 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style>
+      /* Menu Styling */
+      .menu {
+        background-color: #333;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .menu a {
+        float: left;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        transition: background-color 0.3s;
+      }
+
+      .menu a:hover {
+        background-color: #4CAF50;
+      }
+
+      .menu a.active {
+        background-color: #4CAF50;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+    </style>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="menu">
+      <div class="container">
+        <%= link_to "Home", root_path, class: current_page?(root_path) ? "active" : "" %>
+        <%= link_to "About", about_path, class: current_page?(about_path) ? "active" : "" %>
+        <%= link_to "Recipes", recipes_path, class: current_page?(recipes_path) ? "active" : "" %>
+      </div>
+    </div>
+
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
