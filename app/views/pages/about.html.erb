@@ -1,0 +1,116 @@
+<div class="about-container">
+  <h1>About My Recipe Application</h1>
+
+  <section class="about-section">
+    <h2>1.1 - Describe Datasets</h2>
+
+    <div class="dataset">
+      <h3>1. Edamam Recipe API</h3>
+      <ul>
+        <li>Provides recipe data including title, ingredients, cooking time, dietary labels.</li>
+        <li>Structure: JSON response with nested objects for recipes and ingredients.</li>
+        <li>Required fields: title, cooking_time, ingredients_list, dietary_labels, image_url.</li>
+      </ul>
+    </div>
+
+    <div class="dataset">
+      <h3>2. Faker Gem</h3>
+      <ul>
+        <li>Generates fake users and reviews.</li>
+        <li>Structure: Random usernames, emails, and review text.</li>
+        <li>Required fields: username, email, review_text, rating.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <h2>1.2 - Entity Relationship Diagram (ERD)</h2>
+    <div class="erd-description">
+      <p>My application uses a relational database with the following relationships:</p>
+      <ul>
+        <li>Users have many Reviews</li>
+        <li>A Recipe has many Reviews.</li>
+        <li>A User has many favorite_recipes (where is_favorite=true).</li>
+        <li>A Recipe has many users who reviewed/favorited it.</li>
+      </ul>
+    </div>
+
+    <div class="erd-visual">
+      <pre>
+      +------------------+       +------------------+       +------------------+
+      |      User        |       |      Review      |       |      Recipe      |
+      +------------------+       +------------------+       +------------------+
+      | id (PK)          |------>| user_id (FK)     |       | id (PK)          |
+      | username         |       | recipe_id (FK)   |<------| title            |
+      | email            |       | rating           |       | cooking_time     |
+      | created_at       |       | comment          |       | ingredients_list |
+      | updated_at       |       | is_favorite      |       | dietary_labels   |
+      +------------------+       | created_at       |       | image_url        |
+            |                    | updated_at       |       | created_at       |
+            |                    +------------------+       | updated_at       |
+            |                                              +------------------+
+            |                                                    ^
+            |                                                    |
+            +----------------------------------------------------+
+      </pre>
+    </div>
+  </section>
+</div>
+
+<style>
+  .about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .about-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    color: #555;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    color: #444;
+    margin-top: 20px;
+  }
+
+  .dataset {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 4px;
+    border-left: 4px solid #4CAF50;
+  }
+
+  .erd-visual {
+    overflow-x: auto;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+
+  pre {
+    font-family: monospace;
+    white-space: pre;
+  }
+
+  ul {
+    line-height: 1.6;
+  }
+</style>
