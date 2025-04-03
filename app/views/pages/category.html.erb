@@ -34,6 +34,10 @@
       </div>
     <% end %>
   </div>
+
+  <div class="pagination">
+    <%= paginate @recipes, window: 2 %>
+  </div>
 </div>
 
 <style>
@@ -150,6 +154,39 @@
     background-color: #5a6268;
   }
 
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .pagination a, .pagination span {
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .pagination a:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+  }
+
+  .pagination .current {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+
+  .pagination .disabled {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+  }
+
   @media (max-width: 768px) {
     .category-header {
       flex-direction: column;
@@ -159,6 +196,15 @@
 
     .recipes-grid {
       grid-template-columns: 1fr;
+    }
+
+    .pagination {
+      flex-wrap: wrap;
+    }
+
+    .pagination a, .pagination span {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
     }
   }
 </style>

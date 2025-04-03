@@ -6,7 +6,7 @@ class PagesController < ApplicationController
   end
 
   def recipes
-    @recipes = Recipe.all
+    @recipes = Recipe.page(params[:page]).per(9)
   end
 
   def recipe
@@ -16,6 +16,6 @@ class PagesController < ApplicationController
 
   def category
     @category = params[:category]
-    @recipes = Recipe.where("dietary_labels LIKE ?", "%#{@category}%")
+    @recipes = Recipe.where("dietary_labels LIKE ?", "%#{@category}%").page(params[:page]).per(9)
   end
 end
