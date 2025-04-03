@@ -16,27 +16,29 @@ User.destroy_all
 Recipe.destroy_all
 Review.destroy_all
 
-# Create 10 fake users
-10.times do
+# Create 20 fake users
+20.times do
   User.create!(
     username: Faker::Internet.unique.username,
     email: Faker::Internet.unique.email
   )
 end
 
-# Fetch 20 recipes from Edamam API
-edamam_response = HTTParty.get(
-  "https://api.edamam.com/search",
-  query: {
-    q: "pasta",
-    app_id: ENV['EDAMAM_APP_ID'],
-    app_key: ENV['EDAMAM_APP_KEY'],
-    from: 0,
-    to: 20
-  }
-)
-
-recipes_data = JSON.parse(edamam_response.body)["hits"]
+# Fetch 100 recipes from Edamam API (in batches of 20)
+recipes_data = []
+5.times do |i|
+  edamam_response = HTTParty.get(
+    "https://api.edamam.com/search",
+    query: {
+      q: ["pasta", "chicken", "vegetarian", "dessert", "soup"][i],
+      app_id: ENV['EDAMAM_APP_ID'],
+      app_key: ENV['EDAMAM_APP_KEY'],
+      from: 0,
+      to: 20
+    }
+  )
+  recipes_data.concat(JSON.parse(edamam_response.body)["hits"])
+end
 
 # Store recipes
 recipes_data.each do |hit|
@@ -51,9 +53,9 @@ recipes_data.each do |hit|
   )
 end
 
-# Create 2-5 reviews per recipe (some marked as favorites)
+# Create 2-3 reviews per recipe (some marked as favorites)
 Recipe.all.each do |recipe|
-  rand(2..5).times do
+  rand(2..3).times do
     Review.create!(
       user: User.all.sample,
       recipe: recipe,
