@@ -1,351 +1,75 @@
 <div class="recipe-detail-container">
-  <div class="recipe-header">
-    <h1><%= @recipe.title %></h1>
-    <div class="recipe-meta">
-      <span class="cooking-time">
-        <i class="far fa-clock"></i> <%= @recipe.cooking_time %> minutes
-      </span>
-      <span class="dietary-labels">
-        <i class="fas fa-utensils"></i> <%= @recipe.dietary_labels %>
-      </span>
-    </div>
-
-    <div class="category-buttons">
-      <% @recipe.dietary_labels.split(", ").each do |category| %>
-        <a href="<%= category_path(category) %>" class="category-btn">
-          <i class="fas fa-tag"></i> <%= category %>
-        </a>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="recipe-content">
-    <div class="recipe-image">
-      <img src="<%= @recipe.image_url %>" alt="<%= @recipe.title %>">
-    </div>
-
-    <div class="recipe-details">
-      <section class="ingredients">
-        <h2>Ingredients</h2>
-        <ul>
-          <% @recipe.ingredients_list.split(", ").each do |ingredient| %>
-            <li><%= ingredient %></li>
-          <% end %>
-        </ul>
-      </section>
-    </div>
-  </div>
-
-  <div class="reviews-section">
-    <h2>Reviews</h2>
-    <div class="reviews-stats">
-      <div class="average-rating">
-        <span class="rating-label">Average Rating:</span>
-        <div class="stars">
-          <% avg_rating = @reviews.average(:rating).to_f %>
-          <% 5.times do |i| %>
-            <i class="fas fa-star <%= i < avg_rating ? 'filled' : '' %>"></i>
-          <% end %>
-          <span class="rating-value"><%= avg_rating.round(1) %>/5</span>
-        </div>
-      </div>
-      <div class="total-reviews">
-        <span class="review-count"><%= @reviews.count %> reviews</span>
-        <span class="favorite-count"><%= @reviews.where(is_favorite: true).count %> favorites</span>
-      </div>
-    </div>
-
-    <div class="reviews-list">
-      <% @reviews.each do |review| %>
-        <div class="review-card">
-          <div class="review-header">
-            <div class="reviewer-info">
-              <i class="fas fa-user"></i>
-              <span class="reviewer-name"><%= review.user.username %></span>
-            </div>
-            <div class="review-rating">
-              <% review.rating.times do %>
-                <i class="fas fa-star filled"></i>
-              <% end %>
-              <% (5 - review.rating).times do %>
-                <i class="fas fa-star"></i>
-              <% end %>
-            </div>
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card">
+        <div class="recipe-image position-relative" style="background-image: url('<%= @recipe.image_url %>'); height: 400px; background-size: cover; background-position: center;">
+          <div class="position-absolute bottom-0 end-0 m-3">
+            <span class="badge bg-dark">
+              <i class="far fa-clock"></i> <%= @recipe.cooking_time %> min
+            </span>
           </div>
-          <div class="review-content">
-            <p class="review-comment"><%= review.comment %></p>
-            <% if review.is_favorite %>
-              <span class="favorite-badge">
-                <i class="fas fa-heart"></i> Favorite
-              </span>
+        </div>
+
+        <div class="card-body">
+          <h1 class="card-title mb-4"><%= @recipe.title %></h1>
+
+          <div class="recipe-meta mb-4">
+            <span class="text-muted">
+              <i class="fas fa-utensils"></i> <%= @recipe.dietary_labels %>
+            </span>
+          </div>
+
+          <div class="recipe-ingredients mb-4">
+            <h3>Ingredients</h3>
+            <p><%= @recipe.ingredients_list %></p>
+          </div>
+
+          <div class="recipe-reviews">
+            <h3>Reviews</h3>
+            <% if @reviews.any? %>
+              <% @reviews.each do |review| %>
+                <div class="review-card mb-3 p-3 border rounded">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0"><%= review.user.username %></h5>
+                    <div class="rating">
+                      <% review.rating.times do %>
+                        <i class="fas fa-star text-warning"></i>
+                      <% end %>
+                    </div>
+                  </div>
+                  <p class="mb-0"><%= review.comment %></p>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-muted">No reviews yet.</p>
             <% end %>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
-  </div>
-
-  <div class="recipe-actions">
-    <a href="<%= recipes_path %>" class="btn btn-secondary">
-      <i class="fas fa-arrow-left"></i> Back to Recipes
-    </a>
   </div>
 </div>
 
 <style>
   .recipe-detail-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  .recipe-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .recipe-header h1 {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-  }
-
-  .recipe-meta {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    color: #666;
-  }
-
-  .cooking-time, .dietary-labels {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .recipe-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    padding: 2rem 0;
   }
 
   .recipe-image {
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-
-  .recipe-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .recipe-details {
-    padding: 1rem;
-  }
-
-  .ingredients h2 {
-    color: #333;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-  }
-
-  .ingredients ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .ingredients li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
-    color: #666;
-  }
-
-  .reviews-section {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-  }
-
-  .reviews-section h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-  }
-
-  .reviews-stats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-  }
-
-  .average-rating {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .rating-label {
-    font-weight: 500;
-    color: #333;
-  }
-
-  .stars {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .stars .fa-star {
-    color: #ddd;
-  }
-
-  .stars .fa-star.filled {
-    color: #ffc107;
-  }
-
-  .rating-value {
-    margin-left: 0.5rem;
-    color: #666;
-  }
-
-  .total-reviews {
-    display: flex;
-    gap: 1rem;
-    color: #666;
-  }
-
-  .reviews-list {
-    display: grid;
-    gap: 1.5rem;
+    border-radius: 8px 8px 0 0;
   }
 
   .review-card {
-    padding: 1.5rem;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: white;
+    background-color: #f8f9fa;
   }
 
-  .review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .reviewer-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #333;
-  }
-
-  .review-rating {
-    display: flex;
-    gap: 0.25rem;
-  }
-
-  .review-rating .fa-star {
-    color: #ddd;
-  }
-
-  .review-rating .fa-star.filled {
-    color: #ffc107;
-  }
-
-  .review-content {
-    color: #666;
-  }
-
-  .review-comment {
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
-  }
-
-  .favorite-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    background: #ffe6e6;
-    color: #dc3545;
-    border-radius: 15px;
-    font-size: 0.9rem;
-  }
-
-  .recipe-actions {
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary {
-    background-color: #6c757d;
-    color: white;
-  }
-
-  .btn-secondary:hover {
-    background-color: #5a6268;
+  .rating {
+    font-size: 1.1rem;
   }
 
   @media (max-width: 768px) {
-    .recipe-content {
-      grid-template-columns: 1fr;
+    .recipe-image {
+      height: 300px !important;
     }
-
-    .recipe-meta {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .reviews-stats {
-      flex-direction: column;
-      gap: 1rem;
-      text-align: center;
-    }
-  }
-
-  .category-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin: 1rem 0 2rem 0;
-  }
-
-  .category-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #e9ecef;
-    color: #495057;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-  }
-
-  .category-btn:hover {
-    background-color: #dee2e6;
-    color: #212529;
   }
 </style>
