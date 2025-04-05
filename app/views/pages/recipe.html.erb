@@ -19,48 +19,52 @@
   <div class="row">
     <div class="col-md-8 mx-auto">
       <div class="card">
-        <div class="recipe-image position-relative" style="background-image: url('<%= @recipe.image_url %>'); height: 400px; background-size: cover; background-position: center;">
-          <div class="position-absolute bottom-0 end-0 m-3">
-            <span class="badge bg-dark">
-              <i class="far fa-clock"></i> <%= @recipe.cooking_time %> min
+        <div class="recipe-image" style="background-image: url('<%= @recipe.image_url %>'); height: 400px; background-size: cover; background-position: center;">
+          <div class="position-absolute top-0 end-0 m-3">
+            <span class="badge bg-primary">
+              <i class="fas fa-clock"></i> <%= @recipe.cooking_time %> mins
             </span>
           </div>
         </div>
-
         <div class="card-body">
-          <h1 class="card-title mb-4"><%= @recipe.title %></h1>
+          <h1 class="card-title mb-3"><%= @recipe.title %></h1>
 
-          <div class="recipe-meta mb-4">
-            <span class="text-muted">
-              <i class="fas fa-utensils"></i> <%= @recipe.dietary_labels %>
-            </span>
+          <div class="dietary-labels mb-4">
+            <% @recipe.dietary_labels.split(',').each do |label| %>
+              <span class="badge bg-info me-2"><%= label.strip %></span>
+            <% end %>
           </div>
 
-          <div class="recipe-ingredients mb-4">
-            <h3>Ingredients</h3>
-            <p><%= @recipe.ingredients_list %></p>
-          </div>
+          <h4 class="mb-3">Ingredients</h4>
+          <ul class="list-unstyled">
+            <% @recipe.ingredients_list.split(',').each do |ingredient| %>
+              <li class="mb-2"><i class="fas fa-check text-success me-2"></i><%= ingredient.strip %></li>
+            <% end %>
+          </ul>
 
-          <div class="recipe-reviews">
-            <h3>Reviews</h3>
-            <% if @reviews.any? %>
-              <% @reviews.each do |review| %>
-                <div class="review-card mb-3 p-3 border rounded">
+          <h4 class="mt-4 mb-3">Reviews</h4>
+          <% if @recipe.reviews.any? %>
+            <% @recipe.reviews.each do |review| %>
+              <div class="card mb-3">
+                <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="mb-0"><%= review.user.username %></h5>
-                    <div class="rating">
+                    <h5 class="card-title mb-0"><%= review.user.username %></h5>
+                    <div>
                       <% review.rating.times do %>
                         <i class="fas fa-star text-warning"></i>
                       <% end %>
+                      <% if review.is_favorite %>
+                        <i class="fas fa-heart text-danger ms-2" title="This is a favorite recipe"></i>
+                      <% end %>
                     </div>
                   </div>
-                  <p class="mb-0"><%= review.comment %></p>
+                  <p class="card-text"><%= review.comment %></p>
                 </div>
-              <% end %>
-            <% else %>
-              <p class="text-muted">No reviews yet.</p>
+              </div>
             <% end %>
-          </div>
+          <% else %>
+            <p class="text-muted">No reviews yet.</p>
+          <% end %>
         </div>
       </div>
     </div>
