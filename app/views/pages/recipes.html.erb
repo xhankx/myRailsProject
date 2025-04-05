@@ -8,6 +8,12 @@
             value: params[:search],
             placeholder: "Search recipes by title, ingredients, or dietary labels...",
             class: "search-input" %>
+
+        <%= f.select :category,
+            options_for_select([['All Categories', '']] + @categories.map { |c| [c, c] }, params[:category]),
+            {},
+            class: "category-select" %>
+
         <%= f.submit "Search", class: "search-button" %>
       </div>
     <% end %>
@@ -260,6 +266,22 @@
     background-color: #0056b3;
   }
 
+  .category-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+    min-width: 150px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+
+  .category-select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+
   @media (max-width: 768px) {
     .recipes-grid {
       grid-template-columns: 1fr;
@@ -287,7 +309,8 @@
       flex-direction: column;
     }
 
-    .search-button {
+    .search-button,
+    .category-select {
       width: 100%;
     }
   }

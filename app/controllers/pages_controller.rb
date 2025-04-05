@@ -6,14 +6,26 @@ class PagesController < ApplicationController
   end
 
   def recipes
-    @recipes = if params[:search].present?
-      Recipe.where("title LIKE :search OR ingredients_list LIKE :search OR dietary_labels LIKE :search",
-                  search: "%#{params[:search]}%")
-            .page(params[:page])
-            .per(9)
-    else
-      Recipe.page(params[:page]).per(9)
+    @recipes = Recipe.all
+
+    # Apply category filter if selected
+    if params[:category].present?
+      @recipes = @recipes.where("dietary_labels LIKE ?", "%#{params[:category]}%")
     end
+
+    # Apply search filter if present
+    if params[:search].present?
+      @recipes = @recipes.where("title LIKE :search OR ingredients_list LIKE :search OR dietary_labels LIKE :search",
+                              search: "%#{params[:search]}%")
+    end
+
+    # Apply pagination
+    @recipes = @recipes.page(params[:page]).per(9)
+
+    # Get all categories for the dropdown
+    @categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta',
+                  'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian',
+                  'Breakfast', 'Goat']
   end
 
   def recipe
