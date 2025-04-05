@@ -1,66 +1,83 @@
-<div class="recipes-container">
-  <h1>Our Recipe Collection</h1>
-
-  <div class="search-container">
-    <%= form_with(url: recipes_path, method: :get, class: "search-form") do |f| %>
-      <div class="search-input-group">
-        <%= f.text_field :search,
-            value: params[:search],
-            placeholder: "Search recipes by title, ingredients, or dietary labels...",
-            class: "search-input" %>
-
-        <%= f.select :category,
-            options_for_select([['All Categories', '']] + @categories.map { |c| [c, c] }, params[:category]),
-            {},
-            class: "category-select" %>
-
-        <%= f.submit "Search", class: "search-button" %>
-      </div>
-    <% end %>
+<div class="row mb-4">
+  <div class="col-12">
+    <h1 class="text-center">Our Recipe Collection</h1>
   </div>
+</div>
 
-  <div class="category-filters">
-    <h2>Browse by Category</h2>
-    <div class="category-buttons">
-      <% categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'] %>
-      <% categories.each do |category| %>
-        <a href="<%= category_path(category) %>" class="category-btn">
-          <i class="fas fa-tag"></i> <%= category %>
-        </a>
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="search-form">
+      <%= form_with(url: recipes_path, method: :get, class: "row g-3") do |f| %>
+        <div class="col-md-6">
+          <%= f.text_field :search,
+              value: params[:search],
+              placeholder: "Search recipes by title, ingredients, or dietary labels...",
+              class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          <%= f.select :category,
+              options_for_select([['All Categories', '']] + @categories.map { |c| [c, c] }, params[:category]),
+              {},
+              class: "form-select" %>
+        </div>
+        <div class="col-md-2">
+          <%= f.submit "Search", class: "btn btn-primary w-100" %>
+        </div>
       <% end %>
     </div>
   </div>
+</div>
 
-  <div class="recipes-grid">
-    <% @recipes.each do |recipe| %>
-      <div class="recipe-card">
-        <a href="<%= recipe_path(recipe) %>" class="recipe-link">
-          <div class="recipe-image" style="background-image: url('<%= recipe.image_url %>');">
-            <div class="cooking-time">
-              <i class="far fa-clock"></i> <%= recipe.cooking_time %> min
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="category-filters text-center">
+      <h2 class="mb-3">Browse by Category</h2>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <% categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'] %>
+        <% categories.each do |category| %>
+          <a href="<%= category_path(category) %>" class="btn btn-outline-secondary category-btn">
+            <i class="fas fa-tag"></i> <%= category %>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <% @recipes.each do |recipe| %>
+    <div class="col">
+      <div class="card h-100 recipe-card">
+        <a href="<%= recipe_path(recipe) %>" class="text-decoration-none text-dark">
+          <div class="recipe-image position-relative" style="background-image: url('<%= recipe.image_url %>');">
+            <div class="position-absolute bottom-0 end-0 m-2">
+              <span class="badge bg-dark">
+                <i class="far fa-clock"></i> <%= recipe.cooking_time %> min
+              </span>
             </div>
           </div>
-
-          <div class="recipe-content">
-            <h3><%= recipe.title %></h3>
-
-            <div class="recipe-info">
-              <span class="info-item">
+          <div class="card-body">
+            <h5 class="card-title"><%= recipe.title %></h5>
+            <div class="mb-2">
+              <span class="text-muted">
                 <i class="fas fa-utensils"></i> <%= recipe.dietary_labels %>
               </span>
             </div>
-
-            <div class="recipe-ingredients">
-              <strong>Ingredients:</strong>
-              <p><%= truncate(recipe.ingredients_list, length: 150) %></p>
+            <div class="card-text">
+              <small class="text-muted">Ingredients:</small>
+              <p class="mb-0"><%= truncate(recipe.ingredients_list, length: 150) %></p>
             </div>
           </div>
         </a>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+</div>
 
-  <div class="pagination">
-    <%= paginate @recipes, window: 2 %>
+<div class="row mt-4">
+  <div class="col-12">
+    <div class="d-flex justify-content-center">
+      <%= paginate @recipes, window: 2 %>
+    </div>
   </div>
 </div>
