@@ -21,13 +21,15 @@
           <%= f.text_field :search,
               value: params[:search],
               placeholder: "Search recipes by title, ingredients, or dietary labels...",
-              class: "form-control" %>
+              class: "form-control",
+              "aria-label": "Search recipes" %>
         </div>
         <div class="col-md-4">
           <%= f.select :category,
               options_for_select([['All Categories', '']] + @categories.map { |c| [c, c] }, params[:category]),
               {},
-              class: "form-select" %>
+              class: "form-select",
+              "aria-label": "Select category" %>
         </div>
         <div class="col-md-2">
           <%= f.submit "Search", class: "btn btn-success w-100" %>
@@ -44,8 +46,8 @@
       <div class="d-flex flex-wrap justify-content-center gap-2">
         <% categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat'] %>
         <% categories.each do |category| %>
-          <a href="<%= category_path(category) %>" class="btn btn-outline-secondary category-btn">
-            <i class="fas fa-tag"></i> <%= category %>
+          <a href="<%= category_path(category) %>" class="btn btn-outline-secondary category-btn" aria-label="View <%= category %> recipes">
+            <i class="fas fa-tag" aria-hidden="true"></i> <%= category %>
           </a>
         <% end %>
       </div>
@@ -57,11 +59,11 @@
   <% @recipes.each do |recipe| %>
     <div class="col">
       <div class="card h-100 recipe-card">
-        <a href="<%= recipe_path(recipe) %>" class="text-decoration-none text-dark">
-          <div class="recipe-image position-relative" style="background-image: url('<%= recipe.image_url %>');">
+        <a href="<%= recipe_path(recipe) %>" class="text-decoration-none text-dark" aria-label="View <%= recipe.title %> recipe">
+          <div class="recipe-image position-relative recipe-bg-<%= recipe.id %>">
             <div class="position-absolute bottom-0 end-0 m-2">
               <span class="badge bg-dark">
-                <i class="far fa-clock"></i> <%= recipe.cooking_time %> min
+                <i class="far fa-clock" aria-hidden="true"></i> <%= recipe.cooking_time %> min
               </span>
             </div>
           </div>
@@ -69,7 +71,7 @@
             <h5 class="card-title"><%= recipe.title %></h5>
             <div class="mb-2">
               <span class="text-muted">
-                <i class="fas fa-utensils"></i> <%= recipe.dietary_labels %>
+                <i class="fas fa-utensils" aria-hidden="true"></i> <%= recipe.dietary_labels %>
               </span>
             </div>
             <div class="card-text">
@@ -142,5 +144,17 @@
   .pagination span.gap {
     border: none;
     padding: 0.5rem 0;
+  }
+
+  <% @recipes.each do |recipe| %>
+    .recipe-bg-<%= recipe.id %> {
+      background-image: url('<%= recipe.image_url %>');
+    }
+  <% end %>
+
+  .recipe-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
   }
 </style>
