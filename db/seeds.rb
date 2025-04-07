@@ -33,7 +33,7 @@ puts "Created #{User.count} users"
 # Fetch recipes from TheMealDB API
 puts "Fetching recipes from TheMealDB API..."
 recipes_data = []
-categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat']
+categories = [ 'Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian', 'Breakfast', 'Goat' ]
 
 categories.each do |category|
   puts "Fetching #{category} recipes..."
@@ -59,7 +59,7 @@ categories.each do |category|
           title: recipe_detail["strMeal"],
           cooking_time: rand(10..60), # Random cooking time since API doesn't provide it
           ingredients_list: ingredients.join(", "),
-          dietary_labels: [category].join(", "),
+          dietary_labels: [ category ].join(", "),
           image_url: recipe_detail["strMealThumb"]
         )
       end

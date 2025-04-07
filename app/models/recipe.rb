@@ -4,7 +4,7 @@ class Recipe < ApplicationRecord
 
   # Helper method to convert ingredients_list into an array
   def ingredients
-    ingredients_list.split(',')
+    ingredients_list.split(",")
   end
 
   validates :title, presence: true

@@ -32,9 +32,9 @@ class PagesController < ApplicationController
     @recipes = @recipes.page(params[:page]).per(9)
 
     # Get all categories for the dropdown
-    @categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Miscellaneous', 'Pasta',
-                  'Pork', 'Seafood', 'Side', 'Starter', 'Vegan', 'Vegetarian',
-                  'Breakfast', 'Goat']
+    @categories = [ "Beef", "Chicken", "Dessert", "Lamb", "Miscellaneous", "Pasta",
+                  "Pork", "Seafood", "Side", "Starter", "Vegan", "Vegetarian",
+                  "Breakfast", "Goat" ]
   end
 
   def recipe
