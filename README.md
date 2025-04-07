@@ -1,25 +1,33 @@
-# README
+# Recipe Application
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple web application for browsing and reviewing recipes, built with Ruby on Rails.
 
-Things you may want to cover:
+## Features
+- Browse recipes with details like cooking time, ingredients, and dietary labels
+- Filter recipes by categories (Beef, Chicken, Dessert, etc.)
+- Search recipes by title, ingredients, or dietary labels
+- View detailed recipe information
+- Read user reviews and ratings
+- See which recipes are marked as favorites
+- Responsive design for desktop and mobile
 
-* Ruby version
-testing
+## Technologies
+- Ruby on Rails
+- Bootstrap 5
+- Font Awesome
+- Google Fonts
+- Kaminari (pagination)
+- Edamam API (recipe data)
+- Faker (sample data)
 
-* System dependencies
+## Setup
+1. Clone the repository
+2. Run `bundle install`
+3. Run `rails db:create db:migrate db:seed`
+4. Run `rails server`
+5. Visit `http://localhost:3000`
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Author
+Hang Xu
+WEBD-3011 (263714) Agile Full Stack Web Development
+Date: 2025-04-07
