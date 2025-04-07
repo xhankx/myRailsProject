@@ -52,6 +52,11 @@ group :development, :test do
 
   # Generate fake data for development and testing
   gem "faker"
+
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rails-omakase', require: false
+  gem 'brakeman', require: false
 end
 
 group :development do
